@@ -1,4 +1,4 @@
-package entity
+package todos
 
 type Todo struct {
 	ID       int    `json:"id"`
