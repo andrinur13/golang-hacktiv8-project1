@@ -10,5 +10,6 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/todos", todos.GetTodos)
+	router.POST("/todos", todos.AddTodos)
 	router.Run()
 }
