@@ -9,6 +9,13 @@ import (
 
 var allTodos []Todo
 
+// Get Todos
+// @Summary Get All Data Todos
+// @Description Get All Todos
+// @Accept json
+// @Produce json
+// @Success 200 {object} Todos
+// @Router /todos [get]
 func GetTodos(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status": "success",
@@ -16,6 +23,14 @@ func GetTodos(c *gin.Context) {
 	})
 }
 
+// Add Todos
+// @Summary Post New Data Todos
+// @Description Post New Data Todos
+// @Accept json
+// @Produce json
+// @Success 200 {object} Todo
+// @Params todo body Todo true "Create Todo"
+// @Router /todos [post]
 func AddTodos(c *gin.Context) {
 	inputTodos := Todo{}
 
@@ -48,6 +63,13 @@ func AddTodos(c *gin.Context) {
 	})
 }
 
+// Delete Todos
+// @Summary Delete Data Todos
+// @Description Delete Data Todos
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router /todos [delete]
 func DeleteTodos(c *gin.Context) {
 	stringId := c.Param("id")
 	Id, _ := strconv.Atoi(stringId)
@@ -64,6 +86,13 @@ func DeleteTodos(c *gin.Context) {
 	})
 }
 
+// Update Todos
+// @Summary Put Edit Data Todos
+// @Description Edit Data Todos
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router /todos [put]
 func UpdateTodos(c *gin.Context) {
 	stringId := c.Param("id")
 	Id, _ := strconv.Atoi(stringId)
