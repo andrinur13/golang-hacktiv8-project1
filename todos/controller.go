@@ -1,6 +1,11 @@
 package todos
 
-import "github.com/gin-gonic/gin"
+import (
+	"encoding/json"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 var allTodos []Todo
 
@@ -41,4 +46,35 @@ func AddTodos(c *gin.Context) {
 		"messages": "Success add new todos",
 		"data":     inputTodos,
 	})
+}
+
+func DeleteTodos(c *gin.Context) {
+	stringId := c.Param("id")
+	Id, _ := strconv.Atoi(stringId)
+	for i, todo := range allTodos {
+		if todo.ID == Id {
+			allTodos = append(allTodos[:i], allTodos[i+1:]...)
+			return
+		}
+	}
+	c.JSON(200, gin.H{
+		"status":   "success",
+		"messages": "Success delete todos",
+		"todos":    allTodos,
+	})
+}
+
+func UpdateTodos(c *gin.Context) {
+	stringId := c.Param("id")
+	Id, _ := strconv.Atoi(stringId)
+	for i, todo := range allTodos {
+		if todo.ID == Id {
+			allTodos = append(allTodos[:i], allTodos[i+1:]...)
+			var updatedTodo Todo
+			json.NewDecoder(c.Request.Body).Decode(&updatedTodo)
+			allTodos = append(allTodos, updatedTodo)
+			json.NewEncoder(c.Writer).Encode(updatedTodo)
+			return
+		}
+	}
 }
