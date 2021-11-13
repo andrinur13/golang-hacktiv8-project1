@@ -62,9 +62,23 @@ var doc = `{
                     "application/json"
                 ],
                 "summary": "Put Edit Data Todos",
+                "parameters": [
+                    {
+                        "description": "Update",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todos.CreateTodo"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.SuccessUpdate"
+                        }
                     }
                 }
             },
@@ -77,11 +91,29 @@ var doc = `{
                     "application/json"
                 ],
                 "summary": "Post New Data Todos",
+                "parameters": [
+                    {
+                        "description": "Todos",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todos.CreateTodo"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID Todo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/todos.Todo"
+                            "$ref": "#/definitions/response.SuccessCreate"
                         }
                     }
                 }
@@ -95,15 +127,78 @@ var doc = `{
                     "application/json"
                 ],
                 "summary": "Delete Data Todos",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID Todo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.SuccessDelete"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "response.SuccessCreate": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/todos.Todo"
+                },
+                "messages": {
+                    "type": "string",
+                    "example": "success add new todos"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "response.SuccessDelete": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": "success delete todos"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "response.SuccessUpdate": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": "success delete todos"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "todos.CreateTodo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Cuci Baju"
+                }
+            }
+        },
         "todos.Todo": {
             "type": "object",
             "properties": {

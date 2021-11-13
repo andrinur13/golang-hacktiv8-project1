@@ -1,5 +1,40 @@
 basePath: /
 definitions:
+  response.SuccessCreate:
+    properties:
+      data:
+        $ref: '#/definitions/todos.Todo'
+      messages:
+        example: success add new todos
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  response.SuccessDelete:
+    properties:
+      messages:
+        example: success delete todos
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  response.SuccessUpdate:
+    properties:
+      messages:
+        example: success delete todos
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  todos.CreateTodo:
+    properties:
+      name:
+        example: Cuci Baju
+        type: string
+    type: object
   todos.Todo:
     properties:
       complete:
@@ -30,11 +65,19 @@ paths:
       consumes:
       - application/json
       description: Delete Data Todos
+      parameters:
+      - description: ID Todo
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SuccessDelete'
       summary: Delete Data Todos
     get:
       consumes:
@@ -54,22 +97,43 @@ paths:
       consumes:
       - application/json
       description: Post New Data Todos
+      parameters:
+      - description: Todos
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/todos.CreateTodo'
+      - description: ID Todo
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/todos.Todo'
+            $ref: '#/definitions/response.SuccessCreate'
       summary: Post New Data Todos
     put:
       consumes:
       - application/json
       description: Edit Data Todos
+      parameters:
+      - description: Update
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/todos.CreateTodo'
       produces:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SuccessUpdate'
       summary: Put Edit Data Todos
 swagger: "2.0"

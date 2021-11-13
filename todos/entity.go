@@ -6,4 +6,8 @@ type Todo struct {
 	Complete bool   `json:"complete" example:"false"`
 }
 
+type CreateTodo struct {
+	Name string `json:"name" example:"Cuci Baju"`
+}
+
 type Todos []Todo

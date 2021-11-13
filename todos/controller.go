@@ -2,6 +2,7 @@ package todos
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -28,8 +29,9 @@ func GetTodos(c *gin.Context) {
 // @Description Post New Data Todos
 // @Accept json
 // @Produce json
-// @Success 200 {object} Todo
-// @Params todo body Todo true "Create Todo"
+// @Success 200 {object} response.SuccessCreate
+// @Param todo body todos.CreateTodo true "Todos"
+// @Param id path int32 true "ID Todo"
 // @Router /todos [post]
 func AddTodos(c *gin.Context) {
 	inputTodos := Todo{}
@@ -68,11 +70,21 @@ func AddTodos(c *gin.Context) {
 // @Description Delete Data Todos
 // @Accept json
 // @Produce json
-// @Success 200
+// @Param id path int32 true "ID Todo"
+// @Success 200 {object} response.SuccessDelete
 // @Router /todos [delete]
 func DeleteTodos(c *gin.Context) {
 	stringId := c.Param("id")
-	Id, _ := strconv.Atoi(stringId)
+	Id, err := strconv.Atoi(stringId)
+
+	if err != nil {
+		c.JSON(200, gin.H{
+			"status": "error",
+			"error":  err,
+		})
+		return
+	}
+
 	for i, todo := range allTodos {
 		if todo.ID == Id {
 			allTodos = append(allTodos[:i], allTodos[i+1:]...)
@@ -81,8 +93,7 @@ func DeleteTodos(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"status":   "success",
-		"messages": "Success delete todos",
-		"todos":    allTodos,
+		"messages": fmt.Sprintf("Success delete todos with id %v", Id),
 	})
 }
 
@@ -91,11 +102,21 @@ func DeleteTodos(c *gin.Context) {
 // @Description Edit Data Todos
 // @Accept json
 // @Produce json
-// @Success 200
+// @Param todo body todos.CreateTodo true "Update"
+// @Success 200 {object} response.SuccessUpdate
 // @Router /todos [put]
 func UpdateTodos(c *gin.Context) {
 	stringId := c.Param("id")
-	Id, _ := strconv.Atoi(stringId)
+	Id, err := strconv.Atoi(stringId)
+
+	if err != nil {
+		c.JSON(200, gin.H{
+			"status": "error",
+			"error":  err,
+		})
+		return
+	}
+
 	for i, todo := range allTodos {
 		if todo.ID == Id {
 			allTodos = append(allTodos[:i], allTodos[i+1:]...)
@@ -106,4 +127,9 @@ func UpdateTodos(c *gin.Context) {
 			return
 		}
 	}
+
+	c.JSON(200, gin.H{
+		"status":   "success",
+		"messages": fmt.Sprintf("Success update todos with id %v", Id),
+	})
 }
