@@ -17,7 +17,7 @@ Kelompok :
 
   Atau dapat menggunakan dengan build dahulu
 
-- Ketik pada root project **``` go build ```***
+- Ketik pada root project **``` go build ```**
 - Lalu jalankan dengan menjalankan file executable tsb.
 
 ### Swagger Dokumentasi ###
